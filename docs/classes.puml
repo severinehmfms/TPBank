@@ -1,0 +1,49 @@
+@startuml
+
+class Customer {
+    - id : int
+    - name : String
+    - firstName : String
+    - lastName : String
+    + toString() : void
+}
+
+abstract class AccountFactory{
+    + createAccount(type : String) : Account
+}
+
+abstract class Account{
+    - id : int
+    - numBankAccount : String
+    - dateCreate : Date
+    - balance : double
+
+    - holder : Customer
+    - listTransactions : List(Transactions)
+}
+class CheckingAccount extends Account{
+
+}
+class SavingAccount extends Account{
+    + getInterets() : double
+}
+
+abstract class Transaction{
+    - id : int
+    - acccount : Account
+    - dateTransaction : Date
+    - amount : double
+}
+class Deposit extends Transaction{
+
+}
+class Withdrawal extends Transaction{
+
+}
+
+Account "1.*" -- "1" Customer
+Account "1" -- "0.*" Transaction
+
+AccountFactory ..> Account : crée
+
+@enduml
