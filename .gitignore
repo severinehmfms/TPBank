@@ -24,6 +24,9 @@ hs_err_pid*
 replay_pid*
 /bin/
 
+# PyCharm / IntelliJ
+.idea/
+
 # Tests de PlantUML
 test.puml
 test2.puml
