@@ -24,8 +24,19 @@ hs_err_pid*
 replay_pid*
 /bin/
 
-# PyCharm / IntelliJ
+# =========================
+# IntelliJ IDEA
+# =========================
 .idea/
+*.iml
+
+# =========================
+# Eclipse
+# =========================
+.metadata/
+.project
+.classpath
+.settings/
 
 # Tests de PlantUML
 test.puml
