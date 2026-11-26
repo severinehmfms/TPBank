@@ -12,7 +12,8 @@ public class DatabaseConnection {
 
     //Constructeur privé : personne ne peut faire "new DatabaseConnection()"
     private DatabaseConnection() {
-        this.url = "jdbc:mysql://localhost/tp_bank";
+        this.url = "jdbc:mysql://localhost:3306/tp_bank";
+        //String url = "jdbc:mariadb://localhost:3306/bank";
         this.user = "tpbank";
         this.password = "tpbank";
         try {

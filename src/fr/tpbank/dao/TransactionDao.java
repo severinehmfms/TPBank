@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface TransactionDao {
 
-    Transaction findById(int id, Connection connection);
-    List<Transaction> findAll(Connection connection);
-    void save(Transaction transaction, Connection connection);
+    Transaction findById(int id);
+    List<Transaction> findAll();
+    void save(Transaction transaction);
 }
