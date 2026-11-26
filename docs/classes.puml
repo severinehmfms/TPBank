@@ -1,5 +1,25 @@
 @startuml
 
+class DatabaseConnection <<Singleton>> {
+    - instance : DatabaseConnection
+    - connection : Connection
+    - DatabaseConnection()
+    + getInstance() : DatabaseConnection
+    + getConnection() : Connection
+}
+
+interface CustomerDao {
+    + findById(id : int) : Customer
+    + findAll() : List<Customer>
+    + save(customer : Customer) : void
+}
+
+class CustomerDaoImpl {
+    + findById(id : int) : Customer
+    + findAll() : List<Customer>
+    + save(customer : Customer) : void
+}
+
 class Customer {
     - id : int
     - name : String
@@ -12,6 +32,17 @@ abstract class AccountFactory{
     + createAccount(type : String) : Account
 }
 
+interface AccountDao {
+    + findById(id : int) : Account
+    + findAll() : List<Account>
+    + save(account : Account) : void
+}
+class AccountDaoImpl {
+    + findById(id : int) : Account
+    + findAll() : List<Account>
+    + save(account : Account) : void
+}
+
 abstract class Account{
     - id : int
     - numBankAccount : String
@@ -22,10 +53,22 @@ abstract class Account{
     - listTransactions : List(Transactions)
 }
 class CheckingAccount extends Account{
-
+    + toString() : void
 }
 class SavingAccount extends Account{
+    + toString() : void
     + getInterets() : double
+}
+
+interface TransactionDao {
+    + findById(id : int) : Transaction
+    + findAll() : List<Transaction>
+    + save(transaction : Transaction) : void
+}
+class TransactionDaoImpl {
+    + findById(id : int) : Transaction
+    + findAll() : List<Transaction>
+    + save(transaction : Transaction) : void
 }
 
 abstract class Transaction{
@@ -45,5 +88,21 @@ Account "1.*" -- "1" Customer
 Account "1" -- "0.*" Transaction
 
 AccountFactory ..> Account : crée
+
+CustomerDao ..> DatabaseConnection : utilise
+AccountDao ..> DatabaseConnection : utilise
+TransactionDao ..> DatabaseConnection : utilise
+
+CustomerDaoImpl ..|> CustomerDao
+CustomerDao ..> Customer : retourne / utilise
+CustomerDaoImpl ..> DatabaseConnection : utilise
+
+AccountDaoImpl ..|> AccountDao
+AccountDao ..> Account : retourne / utilise
+AccountDaoImpl ..> DatabaseConnection : utilise
+
+TransactionDaoImpl ..|> TransactionDao
+TransactionDao ..> Transaction : retourne / utilise
+TransactionDaoImpl ..> DatabaseConnection : utilise
 
 @enduml
