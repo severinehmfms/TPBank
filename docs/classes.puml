@@ -8,80 +8,81 @@ class DatabaseConnection <<Singleton>> {
     + getConnection() : Connection
 }
 
-interface CustomerDao {
-    + findById(id : int) : Customer
-    + findAll() : List<Customer>
-    + save(customer : Customer) : void
+package "DAO" #DDDDDD {
+    interface CustomerDao {
+        + findById(id : int) : Customer
+        + findAll() : List<Customer>
+        + save(customer : Customer) : void
+    }
+    class CustomerDaoImpl {
+        + findById(id : int) : Customer
+        + findAll() : List<Customer>
+        + save(customer : Customer) : void
+    }
+    interface AccountDao {
+        + findById(id : int) : Account
+        + findAll() : List<Account>
+        + save(account : Account) : void
+    }
+    class AccountDaoImpl {
+        + findById(id : int) : Account
+        + findAll() : List<Account>
+        + save(account : Account) : void
+    }
+    interface TransactionDao {
+        + findById(id : int) : Transaction
+        + findAll() : List<Transaction>
+        + save(transaction : Transaction) : void
+    }
+    class TransactionDaoImpl {
+        + findById(id : int) : Transaction
+        + findAll() : List<Transaction>
+        + save(transaction : Transaction) : void
+    }
 }
 
-class CustomerDaoImpl {
-    + findById(id : int) : Customer
-    + findAll() : List<Customer>
-    + save(customer : Customer) : void
+package "Model" #DDDDDD {
+    class Customer {
+        - id : int
+        - name : String
+        - firstName : String
+        - lastName : String
+        + toString() : void
+    }
+    abstract class Account{
+        - id : int
+        - numBankAccount : String
+        - dateCreate : Date
+        - balance : double
+
+        - holder : Customer
+        - listTransactions : List(Transactions)
+    }
+    class CheckingAccount extends Account{
+        + toString() : void
+    }
+    class SavingAccount extends Account{
+        + toString() : void
+        + getInterets() : double
+    }
+    abstract class Transaction{
+        - id : int
+        - acccount : Account
+        - dateTransaction : Date
+        - amount : double
+    }
+    class Deposit extends Transaction{
+
+    }
+    class Withdrawal extends Transaction{
+
+    }
 }
 
-class Customer {
-    - id : int
-    - name : String
-    - firstName : String
-    - lastName : String
-    + toString() : void
-}
+
 
 abstract class AccountFactory{
     + createAccount(type : String) : Account
-}
-
-interface AccountDao {
-    + findById(id : int) : Account
-    + findAll() : List<Account>
-    + save(account : Account) : void
-}
-class AccountDaoImpl {
-    + findById(id : int) : Account
-    + findAll() : List<Account>
-    + save(account : Account) : void
-}
-
-abstract class Account{
-    - id : int
-    - numBankAccount : String
-    - dateCreate : Date
-    - balance : double
-
-    - holder : Customer
-    - listTransactions : List(Transactions)
-}
-class CheckingAccount extends Account{
-    + toString() : void
-}
-class SavingAccount extends Account{
-    + toString() : void
-    + getInterets() : double
-}
-
-interface TransactionDao {
-    + findById(id : int) : Transaction
-    + findAll() : List<Transaction>
-    + save(transaction : Transaction) : void
-}
-class TransactionDaoImpl {
-    + findById(id : int) : Transaction
-    + findAll() : List<Transaction>
-    + save(transaction : Transaction) : void
-}
-
-abstract class Transaction{
-    - id : int
-    - acccount : Account
-    - dateTransaction : Date
-    - amount : double
-}
-class Deposit extends Transaction{
-
-}
-class Withdrawal extends Transaction{
-
 }
 
 Account "1.*" -- "1" Customer
