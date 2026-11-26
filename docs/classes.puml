@@ -1,44 +1,7 @@
 @startuml
 
-class DatabaseConnection <<Singleton>> {
-    - instance : DatabaseConnection
-    - connection : Connection
-    - DatabaseConnection()
-    + getInstance() : DatabaseConnection
-    + getConnection() : Connection
-}
-
-package "DAO" #DDDDDD {
-    interface CustomerDao {
-        + findById(id : int) : Customer
-        + findAll() : List<Customer>
-        + save(customer : Customer) : void
-    }
-    class CustomerDaoImpl {
-        + findById(id : int) : Customer
-        + findAll() : List<Customer>
-        + save(customer : Customer) : void
-    }
-    interface AccountDao {
-        + findById(id : int) : Account
-        + findAll() : List<Account>
-        + save(account : Account) : void
-    }
-    class AccountDaoImpl {
-        + findById(id : int) : Account
-        + findAll() : List<Account>
-        + save(account : Account) : void
-    }
-    interface TransactionDao {
-        + findById(id : int) : Transaction
-        + findAll() : List<Transaction>
-        + save(transaction : Transaction) : void
-    }
-    class TransactionDaoImpl {
-        + findById(id : int) : Transaction
-        + findAll() : List<Transaction>
-        + save(transaction : Transaction) : void
-    }
+abstract class AccountFactory{
+    + createAccount(type : String) : Account
 }
 
 package "Model" #DDDDDD {
@@ -79,10 +42,61 @@ package "Model" #DDDDDD {
     }
 }
 
+package "Services" #E3DFF2 {
+    class CustomerServices{
 
+    }
+    class AccountServices{
 
-abstract class AccountFactory{
-    + createAccount(type : String) : Account
+    }
+    class TransactionServices{
+
+    }
+}
+
+package "Application" {
+
+}
+
+package "DAO" #FCF4F2 {
+    interface CustomerDao {
+        + findById(id : int) : Customer
+        + findAll() : List<Customer>
+        + save(customer : Customer) : void
+    }
+    class CustomerDaoImpl {
+        + findById(id : int) : Customer
+        + findAll() : List<Customer>
+        + save(customer : Customer) : void
+    }
+    interface AccountDao {
+        + findById(id : int) : Account
+        + findAll() : List<Account>
+        + save(account : Account) : void
+    }
+    class AccountDaoImpl {
+        + findById(id : int) : Account
+        + findAll() : List<Account>
+        + save(account : Account) : void
+    }
+    interface TransactionDao {
+        + findById(id : int) : Transaction
+        + findAll() : List<Transaction>
+        + save(transaction : Transaction) : void
+    }
+    class TransactionDaoImpl {
+        + findById(id : int) : Transaction
+        + findAll() : List<Transaction>
+        + save(transaction : Transaction) : void
+    }
+}
+
+class DatabaseConnection <<Singleton>> {
+    {static} instance : DatabaseConnection
+    - url : String
+    - user : String
+    - password : String
+    + getInstance() : DatabaseConnection
 }
 
 Account "1.*" -- "1" Customer
@@ -105,5 +119,15 @@ AccountDaoImpl ..> DatabaseConnection : utilise
 TransactionDaoImpl ..|> TransactionDao
 TransactionDao ..> Transaction : retourne / utilise
 TransactionDaoImpl ..> DatabaseConnection : utilise
+
+CustomerServices ..> CustomerDaoImpl : utilise
+AccountServices ..> AccountDaoImpl : utilise
+TransactionServices ..> TransactionDaoImpl : utilise
+
+AccountServices ..> AccountFactory : utilise
+
+Application ..> AccountServices
+Application ..> TransactionServices
+Application ..> CustomerServices
 
 @enduml
