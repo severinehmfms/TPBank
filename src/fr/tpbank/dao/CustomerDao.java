@@ -1,0 +1,12 @@
+package fr.tpbank.dao;
+import java.sql.Connection;
+import fr.tpbank.model.Customer;
+import java.util.List;
+
+public interface CustomerDao {
+
+    Customer findById(int id, Connection connection);
+    List<Customer> findAll(Connection connection);
+    void save(Customer customer, Connection connection);
+
+}
