@@ -31,7 +31,7 @@ public class Test {
 
         //Test affichage de tous les clients
         System.out.println("--Test findAll : Liste de toutes les opérations existantes :\n");
-        List<Customer> lstCustomers = service.findAll();
+        List<Customer> lstCustomers = service.readAll();
         for (Customer customer : lstCustomers) {
             System.out.println(customer + "\n");
         }
@@ -72,6 +72,14 @@ public class Test {
         System.out.println("\n\nAffichage de la transaction numéro 1 :");
         Transaction transaction = service.readById(1);
         System.out.println(transaction);
+
+        //Affichage des transactions concernant le compte FR1245FR1245
+        System.out.println("\n\nAffichage des transactions du compte FR1245FR1245 :");
+        String numAccountTestEnBase = "FR1245FR1245";
+        List<Transaction> lstTransactions = service.readAllByAccount(numAccountTestEnBase);
+        for (Transaction t : lstTransactions) {
+            System.out.println(t+"\n");
+        }
 
     }
 
