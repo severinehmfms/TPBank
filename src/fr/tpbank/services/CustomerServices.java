@@ -24,7 +24,7 @@ public class CustomerServices {
      * Méthode qui retourne la liste des clients
      * @return
      */
-    public List<Customer> findAll() {
+    public List<Customer> readAll() {
         return customerDao.readAll();
     }
 
