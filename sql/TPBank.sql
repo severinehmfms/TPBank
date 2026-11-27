@@ -19,7 +19,7 @@ CREATE TABLE Customer(
 
 CREATE TABLE Account (
     account_num			    VARCHAR(50)     PRIMARY KEY,
-    type_account    		varchar(12)		NOT NULL,
+    type_account    		varchar(50)		NOT NULL,
     create_date             DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
     balance				    DECIMAL(10,2) 	NOT NULL DEFAULT 0,
     customer_id		        INT	            NOT NULL,
