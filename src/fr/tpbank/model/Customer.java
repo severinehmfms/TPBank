@@ -12,17 +12,22 @@ public class Customer {
     private String name;					    //Nom du client tel qu'il est inscrit sur les comptes
     private String firstName;
     private String lastName;
+    private String mail;
 
     /**
-     * Constructeur simple sans l'id ni le mail
+     * Constructeur
+     * @param idCustomer
      * @param name
      * @param firstName
      * @param lastName
+     * @param mail
      */
-    public Customer(String name, String firstName, String lastName) {
+    public Customer(int idCustomer, String name, String firstName, String lastName, String mail) {
+        this.idCustomer = idCustomer;
         this.name = name;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.mail = mail;
     }
 
     /**
@@ -69,6 +74,14 @@ public class Customer {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
     }
 }
 
