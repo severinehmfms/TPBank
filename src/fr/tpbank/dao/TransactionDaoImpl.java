@@ -6,10 +6,8 @@ import fr.tpbank.model.Deposit;
 import fr.tpbank.model.Transaction;
 import fr.tpbank.model.Withdrawal;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -66,7 +64,25 @@ public class TransactionDaoImpl implements TransactionDao{
 
     @Override
     public List<Transaction> readAllByAccount(String numBankAccount) {
-        return Collections.emptyList();
+        List<Transaction> lstTransactions = new ArrayList<Transaction>();
+
+        String strSql = "SELECT * FROM banktransaction WHERE account_num = ?";
+        try (PreparedStatement ps = connection.prepareStatement(strSql)){
+            ps.setString(1, numBankAccount);
+
+            //System.out.println(strSql);
+            try(ResultSet resultSet = ps.executeQuery()){
+                while(resultSet.next()) {
+                    lstTransactions.add(getTransactionFromDb(resultSet));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return lstTransactions;
     }
 
     @Override
