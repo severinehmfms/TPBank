@@ -34,6 +34,11 @@ public class Test {
         for (Customer customer : lstCustomers) {
             System.out.println(customer + "\n");
         }
+
+        //Test affichage d'un client par son id
+        Customer customer = service.readById(1);
+        System.out.println(customer);
+
     }
 
     public static void testAccount() {
