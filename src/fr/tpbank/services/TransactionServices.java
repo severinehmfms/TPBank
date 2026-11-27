@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -67,27 +68,35 @@ public class TransactionServices {
         AccountServices accountServices = new AccountServices();
         Account account = accountServices.readByNum(numAccount);
 
-        //On déclenche une exception si le compte n'existe pas
-        if (account == null){
-            throw new BankAccountNotFoundException(numAccount);
-        }
+        try {
+            //On déclenche une exception si le compte n'existe pas
+            if (account == null) {
+                throw new BankAccountNotFoundException(numAccount);
+            }
 
-        //On déclenche une exception si le solde est insuffisant pour ce retrait
-        if (account.getBalance() < amount){
-            throw new InsufficientBalanceException();
-        }
+            //On déclenche une exception si le solde est insuffisant pour ce retrait
+            if (account.getBalance() < amount) {
+                throw new InsufficientBalanceException();
+            }
 
-        //On met à jour le solde du compte puis on l'enregistre
-        account.setBalance(account.getBalance() - amount);
-        if (accountServices.save(account)) {
-            //Si l'enregistrement a bien été effectué, on crée un nouveau retrait qu'on enregistre également en base
-            Withdrawal withdrawal = new Withdrawal(new Date(), amount, numAccount);
-            if (!transactionDao.create(withdrawal)) {
+            //On met à jour le solde du compte puis on l'enregistre
+            account.setBalance(account.getBalance() - amount);
+            if (accountServices.save(account)) {
+                //Si l'enregistrement a bien été effectué, on crée un nouveau retrait qu'on enregistre également en base
+                Withdrawal withdrawal = new Withdrawal(new Date(), amount, numAccount);
+                if (!transactionDao.create(withdrawal)) {
+                    return false;
+                }
+            } else {
                 return false;
             }
-        }else{
+            return true;
+        }catch(BankAccountNotFoundException e) {
+            e.printStackTrace();
+        }catch(InsufficientBalanceException e) {
+            e.printStackTrace();
+        }finally {
             return false;
         }
-        return true;
     }
 }
