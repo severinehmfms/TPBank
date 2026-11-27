@@ -5,7 +5,9 @@ import fr.tpbank.model.Account;
 import java.util.List;
 
 public interface AccountDao {
-    Account findById(int id);
-    List<Account> findAll();
-    void save(Account account);
+    Account readByNum(String numAccount);
+
+    List<Account> readAllByCustomer(int idCustomer);
+
+    //void save(Account account);
 }
