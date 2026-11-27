@@ -11,7 +11,7 @@ public class Deposit extends Transaction{
      * @param amount
      * @param numBankAccount
      */
-    public Deposit(int transactionId, Date dateTransaction, double amount, String numBankAccount) {
-        super(transactionId, dateTransaction, amount, numBankAccount);
+    public Deposit(Date dateTransaction, double amount, String numBankAccount) {
+        super(dateTransaction, amount, numBankAccount);
     }
 }

@@ -35,6 +35,12 @@ public abstract class Account {
     }
 
     /**
+     * Méthode getType abstraite
+     * @return
+     */
+    public abstract String getType();
+
+    /**
      * Méthode toString
      */
     @Override

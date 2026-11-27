@@ -9,5 +9,5 @@ public interface AccountDao {
 
     List<Account> readAllByCustomer(int idCustomer);
 
-    //void save(Account account);
+    boolean save(Account account);
 }

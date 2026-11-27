@@ -11,7 +11,7 @@ public class Withdrawal extends Transaction{
      * @param amount
      * @param numBankAccount
      */
-    public Withdrawal(int transactionId, Date dateTransaction, double amount, String numBankAccount) {
-        super(transactionId, dateTransaction, amount, numBankAccount);
+    public Withdrawal(Date dateTransaction, double amount, String numBankAccount) {
+        super(dateTransaction, amount, numBankAccount);
     }
 }

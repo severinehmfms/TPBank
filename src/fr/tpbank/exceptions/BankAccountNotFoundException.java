@@ -1,13 +1,13 @@
 package fr.tpbank.exceptions;
 
-public class BankAccountNoExistsException extends Exception {
+public class BankAccountNotFoundException extends Exception {
 
     private static final long serialVersionUID = 1L;
 
-    public BankAccountNoExistsException(String msg) {
+    public BankAccountNotFoundException(String msg) {
         super(msg);
     }
-    public BankAccountNoExistsException() {
+    public BankAccountNotFoundException() {
         super("Aucun compte n'est associé à ce numéro de compte");
     }
 }

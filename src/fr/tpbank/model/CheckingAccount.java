@@ -20,4 +20,9 @@ public class CheckingAccount extends Account{
         return "COMPTE COURANT : " + super.toString();
     }
 
+    @Override
+    public String getType() {
+        return typesAccount.CHECKING_ACCOUNT.toString();
+    }
+
 }

@@ -32,4 +32,13 @@ public class AccountServices {
         return accountDao.readAllByCustomer(id_customer);
     }
 
+    /**
+     * Service qui permet de modifier un account
+     * @param account
+     * @return
+     */
+    public boolean save(Account account){
+        return accountDao.save(account);
+    }
+
 }

@@ -2,6 +2,7 @@ package fr.tpbank.app;
 
 import fr.tpbank.model.Account;
 import fr.tpbank.model.Customer;
+import fr.tpbank.model.Deposit;
 import fr.tpbank.model.Transaction;
 import fr.tpbank.services.AccountServices;
 import fr.tpbank.services.CustomerServices;
@@ -23,23 +24,19 @@ public class Test {
 
     public static void testCustomer() {
         System.out.println("\n\nTest pour les clients");
-
         CustomerServices service = new CustomerServices();
 
-        //TODO Si je veux supprimer les clients créés après je met à true
-        boolean wanttosup = true;
-
         //Test affichage de tous les clients
-        System.out.println("--Test findAll : Liste de toutes les opérations existantes :\n");
+        System.out.println("\n\nTest readAll : Liste de tous les clients :\n");
         List<Customer> lstCustomers = service.readAll();
         for (Customer customer : lstCustomers) {
             System.out.println(customer + "\n");
         }
 
         //Test affichage d'un client par son id
+        System.out.println("\n\nTest readById : Client numéro 1 :\n");
         Customer customer = service.readById(1);
         System.out.println(customer);
-
     }
 
     public static void testAccount() {
@@ -51,15 +48,23 @@ public class Test {
         boolean wanttosup = false;
 
         //Test affichage d'un compte par son id.
-        String numAccountTestEnBase = "FR1245FR1245";
+        System.out.println("\n\nTest readByNum : Affichage du compte FR-1234-5678 :\n");
+        String numAccountTestEnBase = "FR-1234-5678";
         Account account = service.readByNum(numAccountTestEnBase);
         System.out.println(account);
 
         //Test affichage de tous les comptes bancaires d'un client
-        System.out.println("--Test readAllByCustomer : Liste des comptes bancaires existants pour le client numéro 1 :\n");
+        System.out.println("\n\nTest readAllByCustomer : Liste des comptes bancaires existants pour le client numéro 1 :\n");
         List<Account> lstComptes = service.readAllByCustomer(1);
         for (Account compte : lstComptes) {
             System.out.println(compte+"\n");
+        }
+
+        //Modification d'un compte
+        System.out.println("\n\nTest save : Modification du solde du compte FR-1234-5678 :\n");
+        account.setBalance(20000.05);
+        if (service.save(account)){
+            System.out.println("La modification du solde du compte FR-1234-5678 a bien été effectuée ");
         }
     }
 
@@ -80,6 +85,11 @@ public class Test {
         for (Transaction t : lstTransactions) {
             System.out.println(t+"\n");
         }
+
+        //TODO Création d'une transaction
+        //Transaction test = new Deposit(new Date(), 50000, numAccountTestEnBase);
+
+
 
     }
 

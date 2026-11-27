@@ -97,4 +97,31 @@ public class AccountDaoImpl implements AccountDao {
         return lstAccounts;
     }
 
+    @Override
+    public boolean save(Account obj) {
+        String str = "UPDATE Account SET account_num=?, type_account=?, create_date=?, balance=?, customer_id =? WHERE account_num=?";
+
+        try (PreparedStatement ps = connection.prepareStatement(str)){
+            ps.setString(1, obj.getNumAccount());
+            ps.setString(2, obj.getTypeAccount());
+            ps.setDate(3, (Date) obj.getCreateDate());
+            ps.setDouble(4, obj.getBalance());
+            ps.setInt(5, obj.getCustomer().getIdCustomer());
+
+            ps.setString(6, obj.getNumAccount());
+            // On récupère le nombre de lignes affectées par la requête
+            int nbLignes = ps.executeUpdate();
+
+            if (nbLignes == 0) {
+                throw new SQLException("Échec de la mise à jour, aucune ligne affectée.");
+            }
+
+            return true;
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }
