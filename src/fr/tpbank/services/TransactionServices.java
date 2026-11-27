@@ -40,23 +40,29 @@ public class TransactionServices {
         AccountServices accountServices = new AccountServices();
         Account account = accountServices.readByNum(numAccount);
 
-        //On déclenche une exception si le compte n'existe pas
-        if (account == null){
-            throw new BankAccountNotFoundException(numAccount);
-        }
+        try {
+            //On déclenche une exception si le compte n'existe pas
+            if (account == null){
+                throw new BankAccountNotFoundException(numAccount);
+            }
 
-        //On met à jour le solde du compte puis on l'enregistre
-        account.setBalance(account.getBalance() + amount);
-        if (accountServices.save(account)) {
-            //TODO Si l'enregistrement a bien été effectué, on crée un nouveau retrait qu'on enregistre également en base
-            Deposit deposit = new Deposit(new Date(), amount, numAccount);
-            if (!transactionDao.create(deposit)) {
+            //On met à jour le solde du compte puis on l'enregistre
+            account.setBalance(account.getBalance() + amount);
+            if (accountServices.save(account)) {
+                //TODO Si l'enregistrement a bien été effectué, on crée un nouveau retrait qu'on enregistre également en base
+                Deposit deposit = new Deposit(new Date(), amount, numAccount);
+                if (!transactionDao.create(deposit)) {
+                    return false;
+                }
+            }else{
                 return false;
             }
-        }else{
+            return true;
+        }catch(BankAccountNotFoundException e) {
+            e.printStackTrace();
+        }finally {
             return false;
         }
-        return true;
     }
 
     /**
