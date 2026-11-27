@@ -46,23 +46,20 @@ public class Test {
 
         AccountServices service = new AccountServices();
 
-        String numAccountTestEnBase = "FR1245FR1245";
-
         //TODO Si je veux supprimer le compte après je met à true
         boolean wanttosup = false;
 
         //Test affichage d'un compte par son id.
+        String numAccountTestEnBase = "FR1245FR1245";
         Account account = service.readByNum(numAccountTestEnBase);
         System.out.println(account);
 
         //Test affichage de tous les comptes bancaires d'un client
-        /*System.out.println("--Test readAllBy : Liste des comptes bancaires existants :\n");
-        List<Account> lstComptes = service.
+        System.out.println("--Test readAllByCustomer : Liste des comptes bancaires existants pour le client numéro 1 :\n");
+        List<Account> lstComptes = service.readAllByCustomer(1);
         for (Account compte : lstComptes) {
             System.out.println(compte+"\n");
-        }*/
-
-
+        }
     }
 
     public static void testTransaction() {
