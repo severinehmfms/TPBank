@@ -19,13 +19,11 @@ public abstract class Transaction {
 
     /**
      * Constructeur
-     * @param transactionId
      * @param dateTransaction
      * @param amount
      * @param numBankAccount
      */
-    public Transaction(int transactionId, Date dateTransaction, double amount, String numBankAccount) {
-        this.transactionId = transactionId;
+    public Transaction(Date dateTransaction, double amount, String numBankAccount) {
         this.dateTransaction = dateTransaction;
         this.amount = amount;
         this.numBankAccount = numBankAccount;

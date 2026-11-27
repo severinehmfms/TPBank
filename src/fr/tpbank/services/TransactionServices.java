@@ -2,11 +2,18 @@ package fr.tpbank.services;
 
 import fr.tpbank.dao.TransactionDao;
 import fr.tpbank.dao.TransactionDaoImpl;
+import fr.tpbank.exceptions.BankAccountNotFoundException;
+import fr.tpbank.exceptions.InsufficientBalanceException;
 import fr.tpbank.model.Account;
+import fr.tpbank.model.Deposit;
 import fr.tpbank.model.Transaction;
+import fr.tpbank.model.Withdrawal;
 import fr.tpbank.utils.Functions;
 
 import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
@@ -28,61 +35,59 @@ public class TransactionServices {
         return transactionDao.readAllByAccount(numAccount);
     }
 
-    public void deposit(String numAccount, double amount){
+    public boolean deposit(String numAccount, double amount) throws BankAccountNotFoundException, SQLException {
         AccountServices accountServices = new AccountServices();
         Account account = accountServices.readByNum(numAccount);
 
-        /*
-        maxAmount = Account.MAX_BALANCE.doubleValue() - Account.getBalance().doubleValue();
-        //System.out.println("Plafond : : "+BankAccount.MAX_BALANCE);
-        //System.out.println("Solde actuel : "+bankAccount.getBalance());
-        System.out.println("Montant maximal du dépôt : "+maxAmount);
-        amount = Functions.input_double(scanner, "Entrez le montant du dépôt", 1, maxAmount);
-
-        if (maxAmount < 1) {
-            System.out.println("Le plafond de votre compte est atteint, il ne vous est plus possible d'effectuer un dépôt !");
-        }else {
-            Deposit op = new Deposit(new Date(), new BigDecimal(amount), numBankAccount);
-            opDao.create(op);
-            //On met à jour le solde du compte avec ce dépôt
-            bankAccount.setBalance(bankAccount.getBalance().add(new BigDecimal(amount)));
-            //ON met à jour ce solde en base de données
-            if (bkDao.update(bankAccount)) {
-                System.out.println("Dépôt bien effectué sur ce compte, le solde est maintenant de "+bankAccount.getBalance() + "€");
-            }
-        }    */
-
-
-    }
-
-    public void withdrawal(String numAccount, double amount){
-        AccountServices accountServices = new AccountServices();
-        Account account = accountServices.readByNum(numAccount);
-
-        /*
-        //On récupère le montant disponible sur le compte et on le choisit comme montant max
-        numBankAccount = inputNumBankAccount(bkDao, "Entrez le numéro du compte sur lequel vous souhaitez effectuer un dépôt : ",true, false);
-        bankAccount = bkDao.readById(numBankAccount);
-
-        maxAmount = bankAccount.getBalance().doubleValue();
-
-        System.out.println("Montant maximal du retrait : "+maxAmount);
-        amount = Functions.input_double(scanner, "Entrez le montant du retrait", 1, maxAmount);
-
-        if (maxAmount < 1) {
-            System.out.println("Vous n'avez plus d'argent sur votre compte, il ne vous est plus possible d'effectuer un retrait !");
-        }else {
-            Withdrawal op = new Withdrawal(new Date(), new BigDecimal(amount), numBankAccount);
-            opDao.create(op);
-            //On met à jour le solde du compte avec ce dépôt
-            bankAccount.setBalance(bankAccount.getBalance().subtract(new BigDecimal(amount)));
-            //ON met à jour ce solde en base de données
-            if (bkDao.update(bankAccount)) {
-                System.out.println("Retrait bien effectué sur ce compte, le solde est maintenant de "+bankAccount.getBalance() + "€");
-            }
+        //On déclenche une exception si le compte n'existe pas
+        if (account == null){
+            throw new BankAccountNotFoundException(numAccount);
         }
 
-        * */
+        //On met à jour le solde du compte puis on l'enregistre
+        account.setBalance(account.getBalance() + amount);
+        if (accountServices.save(account)) {
+            //TODO Si l'enregistrement a bien été effectué, on crée un nouveau retrait qu'on enregistre également en base
+            Deposit deposit = new Deposit(new Date(), amount, numAccount);
+            if (!transactionDao.create(deposit)) {
+                return false;
+            }
+        }else{
+            return false;
+        }
+        return true;
     }
 
+    /**
+     * Retrait
+     * @param numAccount
+     * @param amount
+     */
+    public boolean withdrawal(String numAccount, double amount) throws BankAccountNotFoundException, InsufficientBalanceException, SQLException {
+        AccountServices accountServices = new AccountServices();
+        Account account = accountServices.readByNum(numAccount);
+
+        //On déclenche une exception si le compte n'existe pas
+        if (account == null){
+            throw new BankAccountNotFoundException(numAccount);
+        }
+
+        //On déclenche une exception si le solde est insuffisant pour ce retrait
+        if (account.getBalance() < amount){
+            throw new InsufficientBalanceException();
+        }
+
+        //On met à jour le solde du compte puis on l'enregistre
+        account.setBalance(account.getBalance() - amount);
+        if (accountServices.save(account)) {
+            //Si l'enregistrement a bien été effectué, on crée un nouveau retrait qu'on enregistre également en base
+            Withdrawal withdrawal = new Withdrawal(new Date(), amount, numAccount);
+            if (!transactionDao.create(withdrawal)) {
+                return false;
+            }
+        }else{
+            return false;
+        }
+        return true;
+    }
 }

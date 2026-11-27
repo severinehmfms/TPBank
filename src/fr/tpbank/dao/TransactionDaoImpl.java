@@ -1,14 +1,12 @@
 package fr.tpbank.dao;
 
 import fr.tpbank.database.DatabaseConnection;
-import fr.tpbank.model.Customer;
 import fr.tpbank.model.Deposit;
 import fr.tpbank.model.Transaction;
 import fr.tpbank.model.Withdrawal;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -27,15 +25,22 @@ public class TransactionDaoImpl implements TransactionDao{
         Transaction transaction = null;
         try {
             int rsTransactionId = resultSet.getInt("bank_transaction_id");
-            Date rsTransactionDate = resultSet.getDate("bank_transaction_date");
+
+            //Date rsTransactionDate = resultSet.getDate("bank_transaction_date");
+            java.sql.Date rsTransactionDate = resultSet.getDate("bank_transaction_date");
+            java.util.Date utilTransactionDate = new java.util.Date(rsTransactionDate.getTime());
+
             double rsAmount = resultSet.getDouble("amount");
             String rsTypeTransaction = resultSet.getString("type_transaction");
             String numBankAccount = resultSet.getString("account_num");
 
+            // Pour l'instant on gère que deux cas mais à améliorer dans l'absolu...
             if (rsTypeTransaction.equals(Transaction.typesTransaction.DEPOSIT.toString())) {
-                transaction = new Deposit(rsTransactionId, rsTransactionDate, rsAmount, numBankAccount);
+                transaction = new Deposit(rsTransactionDate, rsAmount, numBankAccount);
+                transaction.setTransactionId(rsTransactionId);
             }else{
-                transaction = new Withdrawal(rsTransactionId, rsTransactionDate, rsAmount, numBankAccount);
+                transaction = new Withdrawal(rsTransactionDate, rsAmount, numBankAccount);
+                transaction.setTransactionId(rsTransactionId);
             }
         }catch(SQLException e) {
             e.printStackTrace();
@@ -86,7 +91,26 @@ public class TransactionDaoImpl implements TransactionDao{
     }
 
     @Override
-    public void save(Transaction transaction) {
+    public boolean create(Transaction transaction) throws SQLException {
+        String sql = "INSERT INTO banktransaction(bank_transaction_id, bank_transaction_date, amount, type_transaction, account_num ) VALUES (?, ?, ?, ?, ?)";
+        try (PreparedStatement ps = connection.prepareStatement(sql)){
+            ps.setInt(1, transaction.getTransactionId());
+            ps.setDate(2, new java.sql.Date(transaction.getDateTransaction().getTime()));
 
+            ps.setDouble(3, transaction.getAmount());
+            if (transaction instanceof Deposit) {
+                // C'est un dépôt
+                ps.setString(4, Transaction.typesTransaction.DEPOSIT.toString() );
+            } else if (transaction instanceof Withdrawal) {
+                // C'est un retrait
+                ps.setString(4, Transaction.typesTransaction.WITHDRAWAL.toString() );
+            }
+            ps.setString(5, transaction.getNumBankAccount());
+            if( ps.executeUpdate() == 0)
+                 throw new SQLException("Échec de l'insertion, aucune ligne affectée.");
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
     }
 }

@@ -1,5 +1,7 @@
 package fr.tpbank.app;
 
+import fr.tpbank.exceptions.BankAccountNotFoundException;
+import fr.tpbank.exceptions.InsufficientBalanceException;
 import fr.tpbank.model.Account;
 import fr.tpbank.model.Customer;
 import fr.tpbank.model.Deposit;
@@ -9,12 +11,13 @@ import fr.tpbank.services.CustomerServices;
 import fr.tpbank.services.TransactionServices;
 
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
 public class Test {
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws BankAccountNotFoundException, SQLException, InsufficientBalanceException {
         testCustomer();
 
         testAccount();
@@ -68,7 +71,7 @@ public class Test {
         }
     }
 
-    public static void testTransaction() {
+    public static void testTransaction() throws BankAccountNotFoundException, SQLException, InsufficientBalanceException {
         System.out.println("\n\nTest pour les opérations bancaires");
 
         TransactionServices service = new TransactionServices();
@@ -80,16 +83,25 @@ public class Test {
 
         //Affichage des transactions concernant le compte FR1245FR1245
         System.out.println("\n\nAffichage des transactions du compte FR1245FR1245 :");
-        String numAccountTestEnBase = "FR1245FR1245";
+        String numAccountTestEnBase = "FR-1234-5678";
         List<Transaction> lstTransactions = service.readAllByAccount(numAccountTestEnBase);
         for (Transaction t : lstTransactions) {
             System.out.println(t+"\n");
         }
 
-        //TODO Création d'une transaction
+        //Test dépôt
+        if (service.deposit(numAccountTestEnBase, 5000)){
+            System.out.println("Dépôt de 5000 sur le compte FR-1234-5678 bien effectué\n");
+        }
+
+        //Test retrait
+        if (service.withdrawal(numAccountTestEnBase, 1000)){
+            System.out.println("Retrait de 1000 sur le compte FR-1234-5678 bien effectué\n");
+        }
+
+        //TODO TEST d'une transaction
         //Transaction test = new Deposit(new Date(), 50000, numAccountTestEnBase);
-
-
+        //service.create
 
     }
 
