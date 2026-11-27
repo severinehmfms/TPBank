@@ -1,18 +1,23 @@
 package fr.tpbank.model;
 
+import java.util.Date;
 import java.util.List;
 
 public class CheckingAccount extends Account{
     /**
-     * Constructeur complet
+     * Constructeur
      *
-     * @param typeAccount
      * @param numBankAccount
      * @param customer
      * @param balance
-     * @param lstTransactions
      */
-    public CheckingAccount(int typeAccount, String numBankAccount, Customer customer, double balance) {
-        super(typeAccount, numBankAccount, customer, balance);
+    public CheckingAccount(String numBankAccount, Customer customer, double balance, Date createDate) {
+        super(typesAccount.CHECKING_ACCOUNT.toString(), numBankAccount, customer, balance, createDate);
     }
+
+    @Override
+    public String toString() {
+        return "COMPTE COURANT : " + super.toString();
+    }
+
 }

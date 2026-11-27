@@ -1,6 +1,6 @@
 package fr.tpbank.model;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -12,8 +12,9 @@ public abstract class Account {
         CHECKING_ACCOUNT, SAVING_ACCOUNT
     }
 
-    private int typeAccount;
-    private String numBankAccount;				//Numéro de compte
+    private String numAccount;		    		//Numéro de compte
+    private String typeAccount;
+    private Date createDate;
     private Customer customer;					//Titulaire du compte
     private double balance;					    //Solde du compte (mis à jour après chaque opération)
     private List<Transaction> lstTransactions;	//Liste des transactions associées à ce compte
@@ -21,15 +22,16 @@ public abstract class Account {
     /**
      * Constructeur
      * @param typeAccount
-     * @param numBankAccount
+     * @param numAccount
      * @param customer
      * @param balance
      */
-    public Account(int typeAccount, String numBankAccount, Customer customer, double balance) {
+    public Account(String typeAccount, String numAccount, Customer customer, double balance, Date createDate) {
         this.typeAccount = typeAccount;
-        this.numBankAccount = numBankAccount;
+        this.numAccount = numAccount;
         this.customer = customer;
         this.balance = balance;
+        this.createDate = createDate;
     }
 
     /**
@@ -37,15 +39,23 @@ public abstract class Account {
      */
     @Override
     public String toString() {
-        return "Numéro de compte : " + this.numBankAccount + " - Titulaire : " + this.customer.getName() + " - Solde : " + this.balance + "€";
+        return "Numéro de compte : " + this.numAccount + " - Titulaire : " + this.customer.getName() + " Créé le : " + this.createDate + " - Solde : " + this.balance + "€";
     }
 
-    public String getNumBankAccount() {
-        return numBankAccount;
+    public String getNumAccount() {
+        return numAccount;
     }
 
-    public void setNumBankAccount(String numBankAccount) {
-        this.numBankAccount = numBankAccount;
+    public void setNumAccount(String numAccount) {
+        this.numAccount = numAccount;
+    }
+
+    public String getTypeAccount() {
+        return typeAccount;
+    }
+
+    public void setTypeAccount(String typeAccount) {
+        this.typeAccount = typeAccount;
     }
 
     public Customer getCustomer() {
@@ -62,6 +72,14 @@ public abstract class Account {
 
     public void setBalance(double balance) {
         this.balance = balance;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 
     public List<Transaction> getLstTransactions() {
