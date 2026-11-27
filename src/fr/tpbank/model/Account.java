@@ -12,10 +12,27 @@ public abstract class Account {
         CHECKING_ACCOUNT, SAVING_ACCOUNT
     }
 
+    private int typeAccount;
     private String numBankAccount;				//Numéro de compte
     private Customer customer;					//Titulaire du compte
     private double balance;					    //Solde du compte (mis à jour après chaque opération)
     private List<Transaction> lstTransactions;	//Liste des transactions associées à ce compte
+
+    /**
+     * Constructeur complet
+     * @param typeAccount
+     * @param numBankAccount
+     * @param customer
+     * @param balance
+     * @param lstTransactions
+     */
+    public Account(int typeAccount, String numBankAccount, Customer customer, double balance, List<Transaction> lstTransactions) {
+        this.typeAccount = typeAccount;
+        this.numBankAccount = numBankAccount;
+        this.customer = customer;
+        this.balance = balance;
+        this.lstTransactions = lstTransactions;
+    }
 
     /**
      * Méthode toString
