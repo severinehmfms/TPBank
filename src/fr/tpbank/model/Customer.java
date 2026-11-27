@@ -8,10 +8,10 @@ public class Customer {
     /**
      * Client
      */
-    protected int idCustomer;				    //Numéro du client (en base)
-    protected String name;					    //Nom du client tel qu'il est inscrit sur les comptes
-    protected String firstName;
-    protected String lastName;
+    private int idCustomer;				    //Numéro du client (en base)
+    private String name;					    //Nom du client tel qu'il est inscrit sur les comptes
+    private String firstName;
+    private String lastName;
 
     /**
      * Constructeur simple sans l'id ni le mail
@@ -25,7 +25,51 @@ public class Customer {
         this.lastName = lastName;
     }
 
+    /**
+     * Redéfinition de la méthode toString
+     * @return
+     */
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "idCustomer=" + idCustomer +
+                ", name='" + name + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                '}';
+    }
 
+    public int getIdCustomer() {
+        return idCustomer;
+    }
+
+    public void setIdCustomer(int idCustomer) {
+        this.idCustomer = idCustomer;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 }
 
 
