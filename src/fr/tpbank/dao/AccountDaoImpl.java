@@ -3,13 +3,14 @@ package fr.tpbank.dao;
 import fr.tpbank.database.DatabaseConnection;
 import fr.tpbank.model.Account;
 
+import java.sql.Connection;
 import java.util.Collections;
 import java.util.List;
 
 public class AccountDaoImpl implements AccountDao {
 
-    //On récupère l'instance de la connection
-    DatabaseConnection connection = DatabaseConnection.getInstance();
+    //On récupère la connection à la base de données via le Singleton
+    Connection connection = DatabaseConnection.getInstance().getConnection();
 
     @Override
     public Account findById(int id) {

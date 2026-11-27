@@ -12,8 +12,8 @@ import fr.tpbank.model.Customer;
 
 public class CustomerDaoImpl implements CustomerDao {
 
-    //On récupère l'instance de la connection
-    DatabaseConnection connection = DatabaseConnection.getInstance();
+    //On récupère la connection à la base de données via le Singleton
+    Connection connection = DatabaseConnection.getInstance().getConnection();
 
     @Override
     public Customer findById(int id) {
@@ -37,14 +37,13 @@ public class CustomerDaoImpl implements CustomerDao {
                     lstCustomers.add(new Customer(rsName, rsFirstName, rsLastName));
                 }
             } catch (SQLException e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         return lstCustomers;
-
-
-
     }
 
     @Override

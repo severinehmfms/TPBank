@@ -9,8 +9,9 @@ import java.util.List;
 
 public class TransactionDaoImpl implements TransactionDao{
 
-    //On récupère l'instance de la connection
-    DatabaseConnection connection = DatabaseConnection.getInstance();
+    //On récupère la connection à la base de données via le Singleton
+    Connection connection = DatabaseConnection.getInstance().getConnection();
+
 
     @Override
     public Transaction findById(int id) {
