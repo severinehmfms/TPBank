@@ -1,7 +1,7 @@
 package fr.tpbank.app;
 import fr.tpbank.dao.*;
-import fr.tpbank.database.DatabaseConnection;
-import fr.tpbank.exceptions.BankAccountNoExistsException;
+import fr.tpbank.exceptions.BankAccountNotFoundException;
+import fr.tpbank.exceptions.InsufficientBalanceException;
 import fr.tpbank.model.Account;
 import fr.tpbank.model.Customer;
 import fr.tpbank.model.Transaction;
@@ -10,9 +10,8 @@ import fr.tpbank.services.CustomerServices;
 import fr.tpbank.services.TransactionServices;
 import fr.tpbank.utils.Functions;
 
-import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -29,7 +28,7 @@ public class Application {
     private static AccountServices accountServices = new AccountServices();
     private static TransactionServices transactionServices = new TransactionServices();
 
-    public static void main(String[] args) throws ParseException, BankAccountNoExistsException {
+    public static void main(String[] args) throws ParseException, BankAccountNotFoundException, SQLException, InsufficientBalanceException {
         String[] menu = {
                 "Afficher la liste des clients",
                 "Afficher les comptes d'un client",
@@ -70,22 +69,23 @@ public class Application {
                     //Effectuer un dépôt
                     System.out.println("Effectuer un dépôt");
 
-                    //TODO Demander au service les montants mini et maxi du dépôt
-
                     numAccount = inputNumBankAccount(accountServices, "Entrez le numéro du compte sur lequel vous souhaitez effectuer un dépôt : ");
                     amount = Functions.input_double(scanner, "Montant du dépôt : ");
-                    transactionServices.deposit(numAccount, amount);
+
+                    if (transactionServices.deposit(numAccount, amount)){
+                        System.out.println("Dépôt de " + amount + " sur le compte " + numAccount + " bien effectué\n");
+                    }
 
                     break;
                 case 4:
                     //Effectuer un retrait
                     System.out.println("Effectuer un retrait");
 
-                    //TODO Demander au service les montants mini et maxi du retrait
-
                     numAccount = inputNumBankAccount(accountServices, "Entrez le numéro du compte sur lequel vous souhaitez effectuer un dépôt : ");
                     amount = Functions.input_double(scanner, "Montant du retrait : ");
-                    transactionServices.withdrawal(numAccount, amount);
+                    if (transactionServices.withdrawal(numAccount, amount)){
+                        System.out.println("Retrait de " + amount + " sur le compte " + numAccount + " bien effectué\n");
+                    }
 
                     break;
                 case 5:
@@ -115,11 +115,11 @@ public class Application {
 
     /**
      * Fonction qui permet de demander un numéro de compte au format FR-XXXX-XXXX
-     * @param accountDao Dao qui permet de gérer en base les Account
+     * @param accountServices Service qui permet de gérer les Account
      * @param prompt Prompt qui demande à l'utilisateur de saisir
      * @return
      * @throws ParseException
-     * @throws BankAccountNoExistsException
+     * @throws BankAccountNotFoundException
      */
 
     public static String inputNumBankAccount(AccountServices accountServices, String prompt) {
@@ -140,13 +140,13 @@ public class Application {
 
                 //On vérifie que ce compte existe
                 }else if ( accountServices.readByNum(input_user) == null){
-                    throw new BankAccountNoExistsException("Ce compte n'existe pas!");
+                    throw new BankAccountNotFoundException("Ce compte n'existe pas!");
                 }else {
                     is_input_ok = true;
                 }
             }catch(ParseException e) {
                 e.printStackTrace();
-            }catch(BankAccountNoExistsException e) {
+            }catch(BankAccountNotFoundException e) {
                 e.printStackTrace();
             }
         }
