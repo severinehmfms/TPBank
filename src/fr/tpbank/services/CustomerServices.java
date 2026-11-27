@@ -10,10 +10,21 @@ public class CustomerServices {
     //Dao pour gérer les clients en base
     CustomerDaoImpl customerDao = new CustomerDaoImpl();
 
-    public List<Customer> findAll() {
-        List<Customer> lstCustomer = customerDao.findAll();
-        return lstCustomer;
+    /**
+     * Méthode qui retourne un client à partir de son id
+     * @param id_customer
+     * @return
+     */
+    public Customer readById(int id_customer){
+        return customerDao.readById(id_customer);
     }
 
+    /**
+     * Méthode qui retourne la liste des clients
+     * @return
+     */
+    public List<Customer> findAll() {
+        return customerDao.readAll();
+    }
 
 }

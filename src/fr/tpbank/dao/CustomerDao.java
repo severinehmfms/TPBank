@@ -5,8 +5,8 @@ import java.util.List;
 
 public interface CustomerDao {
 
-    Customer findById(int id);
-    List<Customer> findAll();
-    void save(Customer customer);
+    Customer readById(int id);
+
+    List<Customer> readAll();
 
 }

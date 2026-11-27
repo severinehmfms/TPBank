@@ -16,12 +16,12 @@ public class CustomerDaoImpl implements CustomerDao {
     Connection connection = DatabaseConnection.getInstance().getConnection();
 
     @Override
-    public Customer findById(int id) {
+    public Customer readById(int id) {
         return null;
     }
 
     @Override
-    public List<Customer> findAll() {
+    public List<Customer> readAll() {
         List<Customer> lstCustomers = new ArrayList<Customer>();
 
         String strSql = "SELECT * FROM Customer";
@@ -46,8 +46,4 @@ public class CustomerDaoImpl implements CustomerDao {
         return lstCustomers;
     }
 
-    @Override
-    public void save(Customer customer) {
-
-    }
 }
