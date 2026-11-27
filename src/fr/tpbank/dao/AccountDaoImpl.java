@@ -5,10 +5,8 @@ import fr.tpbank.factories.AccountFactory;
 import fr.tpbank.model.Account;
 import fr.tpbank.model.Customer;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -80,8 +78,23 @@ public class AccountDaoImpl implements AccountDao {
 
     @Override
     public List<Account> readAllByCustomer(int idCustomer) {
+        List<Account> lstAccounts = new ArrayList<Account>();
 
-        return Collections.emptyList();
+        String strSql = "SELECT * FROM Account WHERE customer_id=?";
+        try (PreparedStatement ps = connection.prepareStatement(strSql)){
+            ps.setInt(1, idCustomer);
+
+            try(ResultSet resultSet = ps.executeQuery()){
+                while(resultSet.next()) {
+                    lstAccounts.add(getAccountFromDb(resultSet));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lstAccounts;
     }
 
 }
