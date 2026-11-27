@@ -12,7 +12,7 @@ public class CheckingAccount extends Account{
      * @param balance
      * @param lstTransactions
      */
-    public CheckingAccount(int typeAccount, String numBankAccount, Customer customer, double balance, List<Transaction> lstTransactions) {
-        super(typeAccount, numBankAccount, customer, balance, lstTransactions);
+    public CheckingAccount(int typeAccount, String numBankAccount, Customer customer, double balance) {
+        super(typeAccount, numBankAccount, customer, balance);
     }
 }

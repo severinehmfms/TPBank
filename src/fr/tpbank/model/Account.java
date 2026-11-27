@@ -19,19 +19,17 @@ public abstract class Account {
     private List<Transaction> lstTransactions;	//Liste des transactions associées à ce compte
 
     /**
-     * Constructeur complet
+     * Constructeur
      * @param typeAccount
      * @param numBankAccount
      * @param customer
      * @param balance
-     * @param lstTransactions
      */
-    public Account(int typeAccount, String numBankAccount, Customer customer, double balance, List<Transaction> lstTransactions) {
+    public Account(int typeAccount, String numBankAccount, Customer customer, double balance) {
         this.typeAccount = typeAccount;
         this.numBankAccount = numBankAccount;
         this.customer = customer;
         this.balance = balance;
-        this.lstTransactions = lstTransactions;
     }
 
     /**

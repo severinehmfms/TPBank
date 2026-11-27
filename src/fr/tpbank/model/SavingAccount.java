@@ -13,7 +13,7 @@ public class SavingAccount extends Account{
      * @param balance
      * @param lstTransactions
      */
-    public SavingAccount(int typeAccount, String numBankAccount, Customer customer, double balance, List<Transaction> lstTransactions) {
-        super(typeAccount, numBankAccount, customer, balance, lstTransactions);
+    public SavingAccount(int typeAccount, String numBankAccount, Customer customer, double balance) {
+        super(typeAccount, numBankAccount, customer, balance);
     }
 }
