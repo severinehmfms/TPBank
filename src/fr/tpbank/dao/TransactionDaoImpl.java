@@ -66,7 +66,7 @@ public class TransactionDaoImpl implements TransactionDao{
     public List<Transaction> readAllByAccount(String numBankAccount) {
         List<Transaction> lstTransactions = new ArrayList<Transaction>();
 
-        String strSql = "SELECT * FROM banktransaction WHERE account_num = ?";
+        String strSql = "SELECT * FROM banktransaction WHERE account_num = ? ORDER BY bank_transaction_date DESC";
         try (PreparedStatement ps = connection.prepareStatement(strSql)){
             ps.setString(1, numBankAccount);
 
