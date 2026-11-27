@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface TransactionDao {
 
-    Transaction findById(int id);
-    List<Transaction> findAll();
+    Transaction readById(int id);
+    List<Transaction> readAllByAccount(String numBankAccount);
     void save(Transaction transaction);
 }

@@ -1,6 +1,5 @@
 package fr.tpbank.model;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -15,7 +14,22 @@ public abstract class Transaction {
     private int transactionId;
     private Date dateTransaction;
     private double amount;
-    private String numBankAccount;    // J'ai mis la chaine car j'avais déjà eu problème de boucle infinie..
+    private String numBankAccount;
+    private Account account;
+
+    /**
+     * Constructeur
+     * @param transactionId
+     * @param dateTransaction
+     * @param amount
+     * @param numBankAccount
+     */
+    public Transaction(int transactionId, Date dateTransaction, double amount, String numBankAccount) {
+        this.transactionId = transactionId;
+        this.dateTransaction = dateTransaction;
+        this.amount = amount;
+        this.numBankAccount = numBankAccount;
+    }
 
     @Override
     public String toString() {

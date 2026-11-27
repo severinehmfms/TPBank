@@ -2,6 +2,7 @@ package fr.tpbank.app;
 
 import fr.tpbank.model.Account;
 import fr.tpbank.model.Customer;
+import fr.tpbank.model.Transaction;
 import fr.tpbank.services.AccountServices;
 import fr.tpbank.services.CustomerServices;
 import fr.tpbank.services.TransactionServices;
@@ -66,6 +67,11 @@ public class Test {
         System.out.println("\n\nTest pour les opérations bancaires");
 
         TransactionServices service = new TransactionServices();
+
+        //Test affichage de la transaction numéro 1
+        System.out.println("\n\nAffichage de la transaction numéro 1 :");
+        Transaction transaction = service.readById(1);
+        System.out.println(transaction);
 
     }
 
