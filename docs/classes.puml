@@ -1,6 +1,6 @@
 @startuml
 
-abstract class AccountFactory{
+class AccountFactory{
     + createAccount(type : String) : Account
 }
 
@@ -10,15 +10,16 @@ package "Model" #DDDDDD {
         - name : String
         - firstName : String
         - lastName : String
+        - mail : String
         + toString() : void
     }
     abstract class Account{
-        - id : int
-        - numBankAccount : String
+        - numAccount : String
+        - typeAccount : String
         - dateCreate : Date
         - balance : double
 
-        - holder : Customer
+        - customer : Customer
         - listTransactions : List(Transactions)
     }
     class CheckingAccount extends Account{
@@ -30,9 +31,10 @@ package "Model" #DDDDDD {
     }
     abstract class Transaction{
         - id : int
-        - acccount : Account
         - dateTransaction : Date
         - amount : double
+
+        - acccount : Account
     }
     class Deposit extends Transaction{
 
@@ -104,21 +106,19 @@ Account "1" -- "0.*" Transaction
 
 AccountFactory ..> Account : crée
 
-CustomerDao ..> DatabaseConnection : utilise
-AccountDao ..> DatabaseConnection : utilise
-TransactionDao ..> DatabaseConnection : utilise
+CustomerDaoImpl ..> DatabaseConnection : utilise
+AccountDaoImpl ..> DatabaseConnection : utilise
+TransactionDaoImpl ..> DatabaseConnection : utilise
 
 CustomerDaoImpl ..|> CustomerDao
-CustomerDao ..> Customer : retourne / utilise
-CustomerDaoImpl ..> DatabaseConnection : utilise
+CustomerDaoImpl ..> Customer : retourne / utilise
 
 AccountDaoImpl ..|> AccountDao
-AccountDao ..> Account : retourne / utilise
-AccountDaoImpl ..> DatabaseConnection : utilise
+AccountDaoImpl ..> Account : retourne / utilise
+AccountDaoImpl ..> AccountFactory : utilise
 
 TransactionDaoImpl ..|> TransactionDao
-TransactionDao ..> Transaction : retourne / utilise
-TransactionDaoImpl ..> DatabaseConnection : utilise
+TransactionDaoImpl ..> Transaction : retourne / utilise
 
 CustomerServices ..> CustomerDaoImpl : utilise
 AccountServices ..> AccountDaoImpl : utilise
