@@ -1,5 +1,6 @@
 package fr.tpbank.services;
 
+import fr.tpbank.dao.CustomerDao;
 import fr.tpbank.dao.CustomerDaoImpl;
 import fr.tpbank.model.Customer;
 
@@ -8,7 +9,7 @@ import java.util.List;
 public class CustomerServices {
 
     //Dao pour gérer les clients en base
-    CustomerDaoImpl customerDao = new CustomerDaoImpl();
+    CustomerDao customerDao = new CustomerDaoImpl();
 
     /**
      * Méthode qui retourne un client à partir de son id

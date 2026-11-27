@@ -1,5 +1,6 @@
 package fr.tpbank.services;
 
+import fr.tpbank.dao.AccountDao;
 import fr.tpbank.dao.AccountDaoImpl;
 import fr.tpbank.model.Account;
 
@@ -11,7 +12,7 @@ import java.util.List;
 public class AccountServices {
 
     //Dao pour gérer les comptes bancaires en base
-    AccountDaoImpl accountDao = new AccountDaoImpl();
+    AccountDao accountDao = new AccountDaoImpl();
 
     /**
      * Service qui permet de récupérer un compte à partir du numéro de compte
